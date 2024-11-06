@@ -4,39 +4,30 @@
 //
 //  Created by on 11/5/24.
 //
-/**
- // main.swift 파일
- // 프로젝트 생성시 자동 생성됨
-
- let game = BaseballGame()
- game.start() // BaseballGame 인스턴스를 만들고 start 함수를 구현하기
-
-
- // BaseballGame.swift 파일 생성
- class 혹은 struct {
-     func start() {
-         let answer = makeAnswer() // 정답을 만드는 함수
-     }
-     
-     func makeAnswer() -> Int {
-         // 함수 내부를 구현하기
-     }
- }
- */
-
 import Foundation
 
-var randomNumbers: Set<Int> = []    // 숫자 담을 int 배열 세팅
-var answerNumbers: [Int] = []       // 정답 저장할 변수(배열) 생성
-
-while randomNumbers.count < 3 {
-    let numbers = Int.random(in: 1...9)
-    randomNumbers.insert(numbers)
+// 게임 실행
+func playGame() {
+    print("숫자야구 게임을 시작합니다!")
+    let game = BaseballGame()
+    
+    while true {
+        print("3자리 숫자를 입력하세요: ", terminator: "")
+        guard let input = readLine() else { continue }
+        
+        let result = game.makeGuess(input)
+        
+        switch result {
+        case .invalidInput:
+            print("올바른 3자리 숫자를 입력해주세요. (중복되지 않은 숫자)")
+        case .ongoing(let strikes, let balls):
+            print("\(strikes)스트라이크 \(balls)볼")
+        case .gameWon(let attempts):
+            print("축하합니다! \(attempts)번 만에 맞추셨습니다!")
+            return
+        }
+    }
 }
 
-
-answerNumbers = Array(randomNumbers)
-print("정답은: \(randomNumbers)") // 정답
-
-
-
+// 게임 시작
+playGame()
