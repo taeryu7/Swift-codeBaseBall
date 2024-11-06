@@ -9,24 +9,26 @@ class BaseballGame {
         self.attempts = 0
     }
     
-    // 랜덤 3자리 숫자 생성
+    // 랜덤 3자리 숫자 생성 - 개선된 버전
     private static func generateRandomNumber() -> [Int] {
-        var numbers = Array(0...9)
-        var result: [Int] = []
+        // 1-9까지의 숫자로 배열 생성 (첫 자리는 0이 올 수 없으므로)
+        var availableNumbers = Array(1...9)
+        // 첫 번째 숫자 선택 및 제거
+        let firstIndex = Int.random(in: 0..<availableNumbers.count)
+        let firstNumber = availableNumbers.remove(at: firstIndex)
         
-        // 첫 번째 숫자는 0이 아닌 숫자여야 함
-        let firstNum = Int.random(in: 1...9)
-        result.append(firstNum)
-        numbers.remove(at: firstNum)
+        // 두 번째, 세 번째 숫자를 위해 0 추가
+        availableNumbers.append(0)
         
-        // 나머지 두 숫자 선택
-        for _ in 0..<2 {
-            let index = Int.random(in: 0..<numbers.count)
-            result.append(numbers[index])
-            numbers.remove(at: index)
-        }
+        // 두 번째 숫자 선택 및 제거
+        let secondIndex = Int.random(in: 0..<availableNumbers.count)
+        let secondNumber = availableNumbers.remove(at: secondIndex)
         
-        return result
+        // 세 번째 숫자 선택
+        let thirdIndex = Int.random(in: 0..<availableNumbers.count)
+        let thirdNumber = availableNumbers[thirdIndex]
+        
+        return [firstNumber, secondNumber, thirdNumber]
     }
     
     // 사용자 입력값 검증
@@ -79,6 +81,11 @@ class BaseballGame {
         return .ongoing(strikes: result.strikes, balls: result.balls)
     }
     
+    // 디버깅을 위한 정답 확인 메서드 (필요시 사용)
+    func getTargetNumber() -> String {
+        return targetNumber.map(String.init).joined()
+    }
+    
     // 게임 결과를 나타내는 열거형
     enum GameResult {
         case invalidInput
@@ -86,3 +93,4 @@ class BaseballGame {
         case gameWon(attempts: Int)
     }
 }
+
