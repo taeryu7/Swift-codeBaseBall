@@ -6,13 +6,79 @@
 //
 import Foundation
 
-// 게임 실행
-func playGame() {
-    print("숫자야구 게임을 시작합니다!")
+/// 게임 기록을 저장하는 구조체
+struct GameRecord {
+    let date: Date
+    let attempts: Int
+}
+
+/// 게임의 전체 기록을 관리하는 클래스
+class GameHistory {
+    private var records: [GameRecord] = []
+    
+    /// 새로운 게임 기록 추가
+    func addRecord(attempts: Int) {
+        records.append(GameRecord(date: Date(), attempts: attempts))
+    }
+    
+    /// 모든 게임 기록 조회
+    func showRecords() {
+        if records.isEmpty {
+            print("아직 게임 기록이 없습니다.")
+            return
+        }
+        
+        print("\n[ 게임 기록 ]")
+        print("날짜\t\t\t시도 횟수")
+        print("----------------------------------------")
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        for record in records {
+            print("\(dateFormatter.string(from: record.date))\t\(record.attempts)회")
+        }
+        print("----------------------------------------")
+    }
+}
+
+/// 메뉴 옵션을 나타내는 열거형
+enum MenuOption: Int {
+    case startGame = 1
+    case showRecords = 2
+    case exit = 3
+}
+
+/// 게임 메뉴를 표시하고 사용자 입력을 받는 함수
+func showMenu() -> MenuOption? {
+    print("\n[ 숫자 야구 게임 ]")
+    print("1. 게임 시작하기")
+    print("2. 게임 기록 보기")
+    print("3. 종료하기")
+    print("선택해주세요: ", terminator: "")
+    
+    guard let input = readLine(),
+          let number = Int(input),
+          let option = MenuOption(rawValue: number) else {
+        return nil
+    }
+    
+    return option
+}
+
+/// 숫자야구 게임을 실행하는 메인 함수
+func playGame() -> Int? {
+    print("\n게임을 시작합니다.")
+    print("서로 다른 3자리 숫자를 맞혀보세요.")
+    print("각 숫자는 0과 9 사이이며, 첫 번째 자리는 0이 될 수 없습니다.")
+    
     let game = BaseballGame()
     
+    // 테스트/디버깅용 정답 출력(추후 지울예정)
+    print("정답: \(game.getTargetNumber())")
+    
     while true {
-        print("3자리 숫자를 입력하세요: ", terminator: "")
+        print("\n3자리 숫자를 입력하세요: ", terminator: "")
         guard let input = readLine() else { continue }
         
         let result = game.makeGuess(input)
@@ -20,14 +86,44 @@ func playGame() {
         switch result {
         case .invalidInput:
             print("올바른 3자리 숫자를 입력해주세요. (중복되지 않은 숫자)")
+            
         case .ongoing(let strikes, let balls):
-            print("\(strikes)스트라이크 \(balls)볼")
+            if strikes == 0 && balls == 0 {
+                print("아웃!")
+            } else {
+                print("\(strikes)스트라이크 \(balls)볼")
+            }
+            
         case .gameWon(let attempts):
-            print("축하합니다! \(attempts)번 만에 맞추셨습니다!")
-            return
+            print("축하합니다! \(attempts)번 만에 맞추셨습니다.")
+            return attempts
         }
     }
 }
 
-// 게임 시작
-playGame()
+// 메인 프로그램 실행
+let gameHistory = GameHistory()
+
+while true {
+    // 메뉴 표시 및 사용자 입력 받기
+    guard let option = showMenu() else {
+        print("잘못된 입력입니다. 1-3 사이의 숫자를 입력해주세요.")
+        continue
+    }
+    
+    // 선택된 메뉴 실행
+    switch option {
+    case .startGame:
+        // 게임 실행 및 결과 저장
+        if let attempts = playGame() {
+            gameHistory.addRecord(attempts: attempts)
+        }
+        
+    case .showRecords:
+        gameHistory.showRecords()
+        
+    case .exit:
+        print("\n게임을 종료합니다.")
+        exit(0)
+    }
+}

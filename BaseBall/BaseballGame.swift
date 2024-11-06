@@ -9,7 +9,7 @@ class BaseballGame {
         self.attempts = 0
     }
     
-    // 랜덤 3자리 숫자 생성 - 개선된 버전
+    // 랜덤 3자리 숫자 생성 - 첫번째 번호에 0 안들어가게 수정
     private static func generateRandomNumber() -> [Int] {
         // 1-9까지의 숫자로 배열 생성 (첫 자리는 0이 올 수 없으므로)
         var availableNumbers = Array(1...9)
