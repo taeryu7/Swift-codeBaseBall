@@ -52,9 +52,17 @@ func showMenu() -> MenuOption? {
     print("3. 종료하기")
     print("선택해주세요: ", terminator: "")
     
-    guard let input = readLine(),
-          let number = Int(input),
-          let option = MenuOption(rawValue: number) else {
+    guard let input = readLine() else { return nil }
+    
+    // 입력값이 숫자가 아닌 경우 처리
+    guard let number = Int(input) else {
+        print("\n잘못된 입력입니다. 1, 2, 3 중에서 선택해주세요.")
+        return nil
+    }
+    
+    // 1, 2, 3 이외의 숫자 입력 처리
+    guard let option = MenuOption(rawValue: number) else {
+        print("\n잘못된 입력입니다. 1, 2, 3 중에서 선택해주세요.")
         return nil
     }
     
@@ -70,7 +78,6 @@ func playGame() -> Int? {
     
     // 정답 확인하기 (테스트용) 추후 삭제예정
     print("정답: \(game.getTargetNumber())")
-
     
     while true {
         print("\n3자리 숫자를 입력하세요: ", terminator: "")
@@ -99,11 +106,10 @@ func playGame() -> Int? {
 // 메인 프로그램 실행
 let gameHistory = GameHistory()
 
-while true {
+gameLoop: while true {
     // 메뉴 표시 및 사용자 입력 받기
     guard let option = showMenu() else {
-        print("잘못된 입력입니다. 1-3 사이의 숫자를 입력해주세요.")
-        continue
+        continue // 잘못된 입력이면 메뉴를 다시 표시
     }
     
     // 선택된 메뉴 실행
@@ -119,6 +125,7 @@ while true {
         
     case .exit:
         print("\n게임을 종료합니다. 안녕히 가세요!")
-        exit(0)
+        //print("\u{001B}[2J") // Program ended with exit code: 0 콘솔 지우기
+        break gameLoop // gameLoop 레이블을 사용하여 프로그램 종료
     }
 }

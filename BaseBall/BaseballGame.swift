@@ -9,7 +9,7 @@
 
 import Foundation
 
-/// 숫자야구 게임의 핵심 로직을 담당하는 클래스
+// 숫자야구 게임의 핵심 로직을 담당하는 클래스
 class BaseballGame {
     // MARK: - Properties
     
@@ -29,8 +29,8 @@ class BaseballGame {
     
     // MARK: - Private Methods
     
-    /// 중복되지 않는 3자리의 랜덤 숫자를 생성하는 메소드
-    /// - Returns: 3개의 정수로 이루어진 배열. 첫 번째 숫자는 1-9, 나머지는 0-9 범위
+    // 중복되지 않는 3자리의 랜덤 숫자를 생성하는 메소드
+    // - Returns: 3개의 정수로 이루어진 배열. 첫 번째 숫자는 1-9, 나머지는 0-9 범위
     private static func generateRandomNumber() -> [Int] {
         // 1-9까지의 숫자로 배열 생성 (첫 자리는 0이 올 수 없으므로)
         var availableNumbers = Array(1...9)
@@ -53,9 +53,9 @@ class BaseballGame {
         return [firstNumber, secondNumber, thirdNumber]
     }
     
-    /// 사용자 입력값의 유효성을 검사하는 메소드
-    /// - Parameter input: 사용자가 입력한 문자열
-    /// - Returns: 유효한 경우 3자리 숫자 배열, 유효하지 않은 경우 nil
+    // 사용자 입력값의 유효성을 검사하는 메소드
+    // - Parameter input: 사용자가 입력한 문자열
+    // - Returns: 유효한 경우 3자리 숫자 배열, 유효하지 않은 경우 nil
     private func validateInput(_ input: String) -> [Int]? {
         // 입력값이 3자리 숫자인지 확인
         guard input.count == 3,
@@ -130,7 +130,7 @@ class BaseballGame {
     
     // MARK: - Nested Types
     
-    /// 게임의 진행 상태를 나타내는 열거형
+    // 게임의 진행 상태를 나타내는 열거형
     enum GameResult {
         /// 잘못된 입력 (3자리가 아니거나 중복된 숫자가 있는 경우)
         case invalidInput
