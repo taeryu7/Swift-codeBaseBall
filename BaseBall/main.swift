@@ -71,7 +71,7 @@ func showMenu() -> MenuOption? {
 
 /// 숫자야구 게임을 실행하는 메인 함수
 func playGame() -> Int? {
-    print("\n게임을 시작합니다!")
+    print("\n게임을 시작합니다.")
     print("서로 다른 3자리 숫자를 맞혀보세요.")
     
     let game = BaseballGame()
@@ -97,7 +97,7 @@ func playGame() -> Int? {
             }
             
         case .gameWon(let attempts):
-            print("축하합니다! \(attempts)번 만에 맞추셨습니다!")
+            print("축하합니다. \(attempts)번 만에 맞추셨습니다.")
             return attempts
         }
     }
@@ -124,7 +124,7 @@ gameLoop: while true {
         gameHistory.showRecords()
         
     case .exit:
-        print("\n게임을 종료합니다. 안녕히 가세요!")
+        print("\n게임을 종료합니다.")
         //print("\u{001B}[2J") // Program ended with exit code: 0 콘솔 지우기
         break gameLoop // gameLoop 레이블을 사용하여 프로그램 종료
     }
