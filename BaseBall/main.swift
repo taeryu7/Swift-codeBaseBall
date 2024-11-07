@@ -125,7 +125,6 @@ gameLoop: while true {
         
     case .exit:
         print("\n게임을 종료합니다.")
-        //print("\u{001B}[2J") // Program ended with exit code: 0 콘솔 지우기
         break gameLoop // gameLoop 레이블을 사용하여 프로그램 종료
     }
 }
